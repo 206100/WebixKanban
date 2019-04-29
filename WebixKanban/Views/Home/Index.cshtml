@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<script src="~/webix/codebase/webix.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" href="~/webix/codebase/webix.css" type="text/css" charset="utf-8">
+
+<div id="areaA"></div>
+<script type="text/javascript" charset="utf-8">
+            webix.ui({
+				container:"areaA",
+				view:"form", scroll: false,
+				width:300,
+
+                elements: [
+					{ view:"text", id:"user", label:"Username"},
+					{ view:"text", id:"pass", type:"password", label:"Password"},
+					{ margin:5, cols:[
+						{ view:"button", label:"Login" , type:"form", click: signIn, hotkey: "enter" }
+					]}
+				]
+			});
+
+        function signIn() {
+            webix.ajax()
+                .post('@Url.Action("SignIn", "Home")', { username: $$("user").getValue(), password: $$("pass").getValue() })
+                .then(function (result) { if (result) webix.send("/kanban", null, "GET"); } )
+        }
+</script>
